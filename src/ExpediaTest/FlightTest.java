@@ -3,12 +3,14 @@ package ExpediaTest;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import Expedia.*;
 
+import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,12 +19,12 @@ public class FlightTest {
 	private Flight targetFlight;
 	private final Date StartDate = new Date(2009, 11, 1);
 	private final Date EndDate = new Date(2009, 11, 30);
-	//private MockRepository mocks;
+//	private MockRepository mocks;
 	
 	@Before
 	public void TestInitialize()
 	{
-		//mocks = new MockRepository();
+//		mocks = new MockRepository();
 		targetFlight = new Flight(StartDate, EndDate, 0);
 	}
 	
@@ -74,27 +76,30 @@ public class FlightTest {
 		Assert.assertEquals(300, target.getBasePrice(), 0.0001);
 	}
 	
-	/*@Test
+	@Test
 	public void TestThatFlightDoesGetNumberOfPassengers()
 	{
-		var mockDatabase = mocks.StrictMock<IDatabase>();
+		IDatabase mockDB = EasyMock.createMock(IDatabase.class);
 		
-		var values = new List<String>();
-		for(var i = 0; i < 50; i++)
-			values.Add("Bob");
+		ArrayList<String> values = new ArrayList<String>();
+		for(int i = 0; i < 50; i++)
+			values.add("Bob");
 		
-		Expect.Call(mockDatabase.Passengers).Return(values);
-		mocks.ReplayAll();
+		mockDB.Passengers = values;
 		
-		var target = new Flight(Date.Now, Date.Now.AddDays(1), 0);
+		EasyMock.replay(mockDB);
 		
-		target.Database = mockDatabase;
-		Assert.AreEqual(50, target.NumberOfPassengers);
-	}*/
+		Flight target = new Flight(StartDate, EndDate, 0);
+		
+		target.Database = mockDB;
+		assertEquals(50, target.NumberOfPassengers());
+		
+		EasyMock.verify(mockDB);
+	}
 	
 	@After
 	public void TearDown()
 	{
-		//mocks.VerifyAll();	
+//		mocks.VerifyAll();	
 	}
 }
