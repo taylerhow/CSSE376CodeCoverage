@@ -63,4 +63,9 @@ public class ServiceLocator {
 	{
 		cars.remove(aCar);	
 	}
+	
+	public void clearDiscounts()
+	{
+		discounts.clear();
+	}
 }

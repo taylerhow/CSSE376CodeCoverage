@@ -117,6 +117,26 @@ public class UserTest
 		this.target.book(new Booking[]{new Flight(StartDate, EndDate, 100), new Hotel(5), new Car(3)});
 		assertEquals(1024.65,this.target.Price(), 0.01);
 	}
+	
+	@Test
+	public void TestDiscountOf0()
+	{
+		ServiceLocator.Instance().clearDiscounts();
+		Discount target = new Discount(0.00, 1);
+		ServiceLocator.Instance().AddDiscount(target);
+		this.target.book(new Booking[]{new Flight(StartDate, EndDate, 100), new Hotel(5), new Car(3)});
+		assertEquals(1035.00,this.target.Price(), 0.01);
+	}
+	
+	@Test
+	public void TestCannotAffordDiscount()
+	{
+		ServiceLocator.Instance().clearDiscounts();
+		Discount target = new Discount(0.01, 99999);
+		ServiceLocator.Instance().AddDiscount(target);
+		this.target.book(new Booking[]{new Flight(StartDate, EndDate, 100), new Hotel(5), new Car(3)});
+		assertEquals(1035.0,this.target.Price(), 0.01);
+	}
 
 	
 	@After
