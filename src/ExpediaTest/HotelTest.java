@@ -1,5 +1,6 @@
 package ExpediaTest;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,33 +85,36 @@ public class HotelTest
         result = target.getRoomOccupant(23);
         Assert.assertEquals("Empty room", result);
 
-        //mocks.VerifyAll();
         EasyMock.verify(mockDB);
     }
-//    @Test
-//    public void TestThatHotelDoesGetRoomCountFromDatabase()
-//    {
-//    	IDatabase mockDB = EasyMock.createStrictMock(IDatabase.class);
-//        List<String> Rooms = new LinkedList<String>();
-//        for (int i = 0; i < 100; i++)
-//        {
-//            Rooms.add(i);
-//        }
-//
-//        // FIXME: what is the EasyMock equivalent, if any?
-//        //EasyMock.expect(mockDB.Rooms).PropertyBehavior();
-//
-//        EasyMock.replay(mockDB);
-//
-//        mockDB.Rooms = Rooms;
-//
-//
-//        var target = new Hotel(10);
-//        target.Database = mockDatabase;
-//
-//        int roomCount = target.AvailableRooms;
-//        Assert.AreEqual(Rooms.Count, roomCount);
-//
-//        mocks.VerifyAll();
-//    }
+	
+    @Test
+    public void TestThatHotelDoesGetRoomCountFromDatabase()
+    {
+    	IDatabase mockDB = EasyMock.createStrictMock(IDatabase.class);
+        ArrayList<String> Rooms = new ArrayList<String>();
+        for (int i = 0; i < 100; i++)
+        {
+            Rooms.add(""+i);
+        }
+
+        mockDB.Rooms = Rooms;
+
+        EasyMock.replay(mockDB);
+
+        Hotel target = new Hotel(10);
+        target.Database = mockDB;
+
+        int roomCount = target.AvailableRooms();
+        Assert.assertEquals(Rooms.size(), roomCount);
+
+        EasyMock.verify(mockDB);
+    }
+    
+    @Test
+    public void TestGetMilesReturns0()
+    {
+    	Hotel target = new Hotel(10);
+    	Assert.assertEquals(0, target.getMiles());
+    }
 }
